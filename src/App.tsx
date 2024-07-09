@@ -48,15 +48,24 @@ const App: React.FC = () => {
     string[]
   >([]);
 
+  const [assessesInterval, setAssessesInterval] = useState(1);
+
   const currentStage = STAGES[currentStageIndex];
 
   const prevStage = useCallback(() => {
-    setCurrentStageIndex((index) => index - 1);
-  }, []);
+    let interval = 1;
+    if (currentStageIndex === 4){
+      interval = assessesInterval;
+    }
+    setCurrentStageIndex((index) => index - interval);
+  }, [currentStageIndex]);
 
   const nextStage = useCallback((by?: number) => {
+    if (currentStageIndex === 2){
+      setAssessesInterval(by ? by : 1);
+    }
     setCurrentStageIndex((index) => index + (by ? by : 1));
-  }, []);
+  }, [currentStageIndex]);
 
   const currentStageElement = (() => {
     switch (currentStage) {
